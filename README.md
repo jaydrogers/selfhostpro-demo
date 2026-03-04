@@ -26,6 +26,34 @@ The CI/CD setup uses a single reusable workflow called by three trigger files. C
 
 Each trigger workflow is ~20 lines — they just pass different tags to the shared build pipeline. Copy a trigger file to add new release channels like `nightly` or `canary`.
 
+### Forking and Publishing to Your Own Self-Host Pro Account
+
+This demo is built for [Self-Host Pro](https://selfhostpro.com) and its registry at **shpcr.io**. To run the workflows against *your* Self-Host Pro account (e.g. for testing or your own product), fork the repo and configure three values in GitHub.
+
+**You will need:**
+
+| Type    | Name            | Where to set | Description |
+|---------|-----------------|--------------|-------------|
+| Variable | `IMAGE_NAME`    | **Settings → Secrets and variables → Actions → Variables** | Image name without tag, e.g. `shpcr.io/your-org/your-app` |
+| Secret   | `SHPCR_USERNAME` | **Settings → Secrets and variables → Actions → Secrets** | Self-Host Pro registry username (see below) |
+| Secret   | `SHPCR_PASSWORD` | **Settings → Secrets and variables → Actions → Secrets** | Self-Host Pro registry password (see below) |
+
+**Step 1 — Self-Host Pro account and token**
+
+1. Create an account (if needed): [Register at Self-Host Pro](https://app.selfhostpro.com/register).
+2. Create an access token for the registry: [Access tokens](https://app.selfhostpro.com/profile/access-tokens). This token is used to authenticate with **shpcr.io**.
+3. In your fork, go to **Settings → Secrets and variables → Actions**.
+   - **Secrets:** Add `SHPCR_USERNAME` and `SHPCR_PASSWORD`. For Self-Host Pro, use your **access token as both the username and the password** when logging in to the registry.
+   - **Variables:** Add `IMAGE_NAME` with your image name (no tag), e.g. `shpcr.io/your-org/your-app`.
+
+**Step 2 — Run the workflows**
+
+After the variable and secrets are set, the existing workflows (stable release, prerelease, edge) will build and push to your image on shpcr.io. Trigger them by pushing to `main`, creating a pre-release, or publishing a release.
+
+**Defaults when not forking**
+
+If you run the repo without setting `IMAGE_NAME`, builds still run and push to the default `shpcr.io/selfhostpro/demo` (which will likely fail because you don't have permission to push to that image). The workflow always uses the `SHPCR_*` secrets for registry login when present, so set those only in your fork if you want to publish to your own account.
+
 ## Local Development with Spin
 
 This project uses [Spin](https://serversideup.net/open-source/spin/) for local Docker development. Spin provides a consistent environment that mirrors production.
