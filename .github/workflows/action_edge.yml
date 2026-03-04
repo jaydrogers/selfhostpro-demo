@@ -8,6 +8,9 @@ on:
     branches:
       - main
 
+env:
+  IMAGE_NAME: ${{ vars.IMAGE_NAME || 'shpcr.io/selfhostpro/demo' }}
+
 permissions:
   contents: read
   packages: write
@@ -16,7 +19,7 @@ jobs:
   build:
     uses: ./.github/workflows/service_docker-build-and-publish.yml
     with:
-      docker-tags: "shpcr.io/selfhostpro/demo:edge-${{ github.ref_name }}"
+      docker-tags: "${{ env.IMAGE_NAME }}:edge-${{ github.ref_name }}"
       dockerfile: "./Dockerfile.php"
       environment: edge
       version: "edge-${{ github.ref_name }}"
