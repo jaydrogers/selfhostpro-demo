@@ -16,7 +16,8 @@ jobs:
   build:
     uses: ./.github/workflows/service_docker-build-and-publish.yml
     with:
-      docker-tags: "${{ vars.IMAGE_NAME || 'shpcr.io/selfhostpro/demo' }}:edge-${{ github.ref_name }}"
+      registry: ${{ vars.REGISTRY || 'shpcr.io' }}
+      docker-tags: "${{ vars.REGISTRY || 'shpcr.io' }}/${{ vars.IMAGE_NAME || 'selfhostpro/demo' }}:edge-${{ github.ref_name }}"
       dockerfile: "./Dockerfile.php"
       environment: edge
       version: "edge-${{ github.ref_name }}"

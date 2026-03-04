@@ -27,6 +27,10 @@ on:
         type: string
         required: false
         description: "Version string to embed in the build"
+      registry:
+        type: string
+        default: "shpcr.io"
+        description: "Docker registry host"
 
 env:
   DOCKER_COMPOSE_CMD: docker compose -f docker-compose.yml -f docker-compose.ci.yml
@@ -110,7 +114,7 @@ jobs:
         with:
           tags: ${{ inputs.docker-tags }}
           dockerfile: ${{ inputs.dockerfile }}
-          registry: "shpcr.io"
+          registry: ${{ inputs.registry }}
           registry-username: ${{ secrets.SHPCR_USERNAME }}
           registry-password: ${{ secrets.SHPCR_PASSWORD }}
           platforms: ${{ inputs.platforms }}

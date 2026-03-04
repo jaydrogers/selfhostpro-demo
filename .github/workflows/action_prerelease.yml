@@ -15,9 +15,10 @@ jobs:
   build:
     uses: ./.github/workflows/service_docker-build-and-publish.yml
     with:
+      registry: ${{ vars.REGISTRY || 'shpcr.io' }}
       docker-tags: |
-        ${{ vars.IMAGE_NAME || 'shpcr.io/selfhostpro/demo' }}:prerelease
-        ${{ vars.IMAGE_NAME || 'shpcr.io/selfhostpro/demo' }}:prerelease-${{ github.ref_name }}
+        ${{ vars.REGISTRY || 'shpcr.io' }}/${{ vars.IMAGE_NAME || 'selfhostpro/demo' }}:prerelease
+        ${{ vars.REGISTRY || 'shpcr.io' }}/${{ vars.IMAGE_NAME || 'selfhostpro/demo' }}:prerelease-${{ github.ref_name }}
       dockerfile: "./Dockerfile.php"
       environment: prerelease
       version: "${{ github.ref_name }}"

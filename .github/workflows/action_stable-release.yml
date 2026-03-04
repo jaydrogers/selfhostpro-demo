@@ -31,10 +31,11 @@ jobs:
     needs: prepare
     uses: ./.github/workflows/service_docker-build-and-publish.yml
     with:
+      registry: ${{ vars.REGISTRY || 'shpcr.io' }}
       docker-tags: |
-        ${{ vars.IMAGE_NAME || 'shpcr.io/selfhostpro/demo' }}:latest
-        ${{ vars.IMAGE_NAME || 'shpcr.io/selfhostpro/demo' }}:${{ needs.prepare.outputs.version }}
-        ${{ vars.IMAGE_NAME || 'shpcr.io/selfhostpro/demo' }}:${{ needs.prepare.outputs.major }}
+        ${{ vars.REGISTRY || 'shpcr.io' }}/${{ vars.IMAGE_NAME || 'selfhostpro/demo' }}:latest
+        ${{ vars.REGISTRY || 'shpcr.io' }}/${{ vars.IMAGE_NAME || 'selfhostpro/demo' }}:${{ needs.prepare.outputs.version }}
+        ${{ vars.REGISTRY || 'shpcr.io' }}/${{ vars.IMAGE_NAME || 'selfhostpro/demo' }}:${{ needs.prepare.outputs.major }}
       dockerfile: "./Dockerfile.php"
       environment: production
       version: "${{ needs.prepare.outputs.version }}"

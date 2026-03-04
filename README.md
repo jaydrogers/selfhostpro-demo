@@ -28,31 +28,36 @@ Each trigger workflow is ~20 lines — they just pass different tags to the shar
 
 ### Forking and Publishing to Your Own Self-Host Pro Account
 
-This demo is built for [Self-Host Pro](https://selfhostpro.com) and its registry at **shpcr.io**. To run the workflows against *your* Self-Host Pro account (e.g. for testing or your own product), fork the repo and configure three values in GitHub.
+This demo pushes to [Self-Host Pro](https://selfhostpro.com)’s registry (**shpcr.io**). To have GitHub Actions build and push to *your* account instead:
 
-**You will need:**
+1. **Fork** this repo.
+2. **Get a Self-Host Pro access token:** [Register](https://app.selfhostpro.com/register) (if needed), then [create an access token](https://app.selfhostpro.com/profile/access-tokens). The token is used as both **username and password** when logging in to the registry.
+3. **Configure your fork** in GitHub (see below). Use **Variables** for image/registry names and **Secrets** only for the token.
 
-| Type    | Name            | Where to set | Description |
-|---------|-----------------|--------------|-------------|
-| Variable | `IMAGE_NAME`    | **Settings → Secrets and variables → Actions → Variables** | Image name without tag, e.g. `shpcr.io/your-org/your-app` |
-| Secret   | `SHPCR_USERNAME` | **Settings → Secrets and variables → Actions → Secrets** | Self-Host Pro registry username (see below) |
-| Secret   | `SHPCR_PASSWORD` | **Settings → Secrets and variables → Actions → Secrets** | Self-Host Pro registry password (see below) |
+---
 
-**Step 1 — Self-Host Pro account and token**
+#### Where to configure: Settings → Secrets and variables → Actions
 
-1. Create an account (if needed): [Register at Self-Host Pro](https://app.selfhostpro.com/register).
-2. Create an access token for the registry: [Access tokens](https://app.selfhostpro.com/profile/access-tokens). This token is used to authenticate with **shpcr.io**.
-3. In your fork, go to **Settings → Secrets and variables → Actions**.
-   - **Secrets:** Add `SHPCR_USERNAME` and `SHPCR_PASSWORD`. For Self-Host Pro, use your **access token as both the username and the password** when logging in to the registry.
-   - **Variables:** Add `IMAGE_NAME` with your image name (no tag), e.g. `shpcr.io/your-org/your-app`.
+In your fork, open **Settings** → **Secrets and variables** → **Actions**. You’ll see two tabs. Use them like this:
 
-**Step 2 — Run the workflows**
+**Variables tab** — for names (not sensitive). Add:
 
-After the variable and secrets are set, the existing workflows (stable release, prerelease, edge) will build and push to your image on shpcr.io. Trigger them by pushing to `main`, creating a pre-release, or publishing a release.
+| Name | Value |
+|------|--------|
+| `IMAGE_NAME` | Image path only, e.g. `your-org/your-app` (no registry, no tag). This is the only variable you need for Self-Host Pro. |
 
-**Defaults when not forking**
+**Optional:** `REGISTRY` — Only set this if you’re using a different registry host (e.g. a dev/staging registry). Everyone else can leave it unset; the workflow defaults to `shpcr.io`.
 
-If you run the repo without setting `IMAGE_NAME`, builds still run and push to the default `shpcr.io/selfhostpro/demo` (which will likely fail because you don't have permission to push to that image). The workflow always uses the `SHPCR_*` secrets for registry login when present, so set those only in your fork if you want to publish to your own account.
+**Secrets tab** — for credentials only. Add:
+
+| Name | Value |
+|------|--------|
+| `SHPCR_USERNAME` | Your Self-Host Pro access token |
+| `SHPCR_PASSWORD` | Same access token (use as both username and password) |
+
+---
+
+**Triggering builds:** After the Variables and Secrets above are set, push to `main` (edge), create a pre-release, or publish a release. The workflows will build and push to your image. If you don’t set anything, the workflow still runs but pushes to `shpcr.io/selfhostpro/demo`, which will fail unless you have push access to that image.
 
 ## Local Development with Spin
 
