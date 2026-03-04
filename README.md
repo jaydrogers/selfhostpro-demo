@@ -38,22 +38,22 @@ This demo pushes to [Self-Host Pro](https://selfhostpro.com)’s registry (**shp
 
 #### Where to configure: Settings → Secrets and variables → Actions
 
-In your fork, open **Settings** → **Secrets and variables** → **Actions**. You’ll see two tabs. Use them like this:
+In your fork, open **Settings** → **Secrets and variables** → **Actions**. The first tab is **Secrets**, then **Variables**. Configure in that order:
 
-**Variables tab** — for names (not sensitive). Add:
+**Secrets tab** (first) — for credentials. Add:
+
+| Name | Value |
+|------|--------|
+| `SHPCR_USERNAME` | Your Self-Host Pro access token |
+| `SHPCR_PASSWORD` | Same access token (use as both username and password) |
+
+**Variables tab** (second) — for names (not sensitive). Add:
 
 | Name | Value |
 |------|--------|
 | `IMAGE_NAME` | Image path only, e.g. `your-org/your-app` (no registry, no tag). This is the only variable you need for Self-Host Pro. |
 
 **Optional:** `REGISTRY` — Only set this if you’re using a different registry host (e.g. a dev/staging registry). Everyone else can leave it unset; the workflow defaults to `shpcr.io`.
-
-**Secrets tab** — for credentials only. Add:
-
-| Name | Value |
-|------|--------|
-| `SHPCR_USERNAME` | Your Self-Host Pro access token |
-| `SHPCR_PASSWORD` | Same access token (use as both username and password) |
 
 ---
 
